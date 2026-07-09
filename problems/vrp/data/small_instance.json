@@ -1,0 +1,13 @@
+{
+  "comment": "6 customers, 2 vehicles. Distances form two natural clusters {0,1,2} and {3,4,5}; optimal assignment splits along the clusters. Total demand 21 vs capacity 11+11=22, so capacity is tight enough to matter.",
+  "distances": [
+    [0.0, 1.0, 1.5, 8.0, 9.0, 8.5],
+    [1.0, 0.0, 1.2, 8.5, 9.5, 9.0],
+    [1.5, 1.2, 0.0, 7.5, 8.0, 8.2],
+    [8.0, 8.5, 7.5, 0.0, 1.1, 1.4],
+    [9.0, 9.5, 8.0, 1.1, 0.0, 1.3],
+    [8.5, 9.0, 8.2, 1.4, 1.3, 0.0]
+  ],
+  "demands": [4, 3, 4, 3, 4, 3],
+  "capacities": [11, 11]
+}

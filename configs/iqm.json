@@ -1,0 +1,16 @@
+{
+  "backend": {
+    "type": "iqm_cloud",
+    "options": {
+      "server_url": "https://cocos.resonance.meetiqm.com/YOUR-QC-NAME",
+      "qaoa_layers": 1
+    }
+  },
+  "solver": {
+    "shots": 2048,
+    "max_qpu_jobs": 50,
+    "poll_base_s": 2.0,
+    "poll_cap_s": 30.0,
+    "verbose": true
+  }
+}

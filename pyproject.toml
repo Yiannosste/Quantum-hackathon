@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qlkit"
+version = "0.1.0"
+description = "Backend-agnostic quantum-classical hybrid optimization toolkit for the Quantum-Accelerated Systems Engineering hackathon"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+iqm = ["qiskit-iqm"]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+include = ["qlkit*", "problems*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,9 @@
+{
+  "backend": {
+    "type": "local_simulator",
+    "options": { "seed": 7, "temperature": 0.1 }
+  },
+  "solver": {
+    "shots": 2048
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "backend": {
+    "type": "mock",
+    "options": { "seed": 0 }
+  },
+  "solver": {
+    "shots": 1024
+  }
+}
