@@ -112,3 +112,12 @@ class VehicleRoutingProblem(ProblemDefinition):
         demoralizes a room like best(feasible_only=True) == None."""
         here = Path(__file__).parent / "data" / "small_instance.json"
         return cls.from_json(here)
+
+    @classmethod
+    def competition_instance(cls) -> "VehicleRoutingProblem":
+        """The scored Day-1 instance: 8 customers x 2 vehicles = 16 binary
+        variables. Two clusters plus two 'bridge' customers, tight capacity.
+        Heads up: the instance WILL change during the event — build your
+        tuner for generality, not for these exact numbers."""
+        here = Path(__file__).parent / "data" / "competition_day1.json"
+        return cls.from_json(here)

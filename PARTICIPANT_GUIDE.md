@@ -259,4 +259,31 @@ You cannot edit `problems/common.py`. You *can* bring your own `ProblemDefinitio
 
 ---
 
+## 7. Event Format & Scoring
+
+### The scored problem
+
+**Only the VRP is scored.** The competition instance is:
+
+```python
+problem = VehicleRoutingProblem.competition_instance()   # 8 customers x 2 vehicles, 16 qubits
+```
+
+The Warehouse problem (`problems/warehouse/`) is **practice material** — it is the ideal sparring partner for checking that your tuner and repair generalize beyond the VRP, which brings us to the most important sentence in this guide:
+
+### ⚡ The Day-2 Live Disruption
+
+> **At an announced moment on Day 2, the problem instance WILL change.** A logistics incident will be injected — we will not tell you in advance what kind — and a new instance file will be pushed to the repository. You will re-optimize against it in a **time-boxed sprint with a capped QPU budget**, and your disruption-response score is a significant part of your final ranking.
+
+What this means for how you build:
+
+- **Do not hardcode λ values, variable indices, or anything instance-specific.** A tuner that is a lookup table for Day-1 data will be worthless at the exact moment the points are richest.
+- Your tuner should accept *any* `ProblemDefinition` and converge from scratch — test this today by pointing it at the Warehouse problem unchanged.
+- Sample efficiency wins: the sprint's QPU budget (enforced via `max_qpu_jobs`) rewards tuners that re-converge in few `evaluate()` calls, not brute-force sweeps.
+- Loading the new instance will be one line: `VehicleRoutingProblem.from_json("problems/vrp/data/<announced-file>.json")`.
+
+This is the professional skill the hackathon exists to teach: real logistics systems re-optimize under disruption *daily*. Your Hybrid Optimizer is only as good as its behavior on data it has never seen.
+
+---
+
 **Final checklist before you submit:** your solution passes `solver.validate()` (that is literally the judging code), your tuner and repair live in `starter_kit/`, and `qlkit/` and `problems/` are byte-for-byte untouched. Now go make the QPU look smarter than it is. 🚀

@@ -24,19 +24,5 @@ def ledger_path(tmp_path):
     return str(tmp_path / "jobs.json")
 
 
-def brute_force_best_feasible(problem):
-    """Exhaustive reference optimum: best true objective over all hard-
-    feasible bitstrings. Ground truth for solver assertions."""
-    n = problem.num_vars()
-    objective = problem.objective_qubo()
-    hard = [c for c in problem.constraints() if c.hard]
-    best_bits, best_cost = None, float("inf")
-    for idx in range(1 << n):
-        bits = tuple((idx >> i) & 1 for i in range(n))
-        solution = problem.decode(bits)
-        if any(c.violation(solution) > 1e-9 for c in hard):
-            continue
-        cost = objective.energy(bits)
-        if cost < best_cost:
-            best_bits, best_cost = bits, cost
-    return best_bits, best_cost
+# Exhaustive reference optimum, shared with the organizer calibration tool.
+from tools.oracle import brute_force_best_feasible  # noqa: E402, F401

@@ -4,6 +4,15 @@ Backend-agnostic Python infrastructure for the logistics hackathon. You build
 the *Hybrid Optimizer* (repair heuristics + lambda tuning); the toolkit owns
 the plumbing (circuits, batching, retries, polling, normalization, scoring).
 
+## Event flow
+
+Practice on `VehicleRoutingProblem.small_instance()` (12 qubits, used by all
+tutorials). The **scored** problem is `VehicleRoutingProblem.competition_instance()`
+(8 customers x 2 vehicles, 16 qubits). On Day 2 a **live disruption instance**
+is released mid-event and re-optimized under a time-boxed sprint with a capped
+QPU budget — build your tuner for generality, not for the Day-1 numbers. The
+Warehouse problem is unscored practice material for exactly that generality.
+
 ## Quickstart
 
 ```bash
