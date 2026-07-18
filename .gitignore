@@ -4,6 +4,7 @@ __pycache__/
 .pytest_cache/
 .qlkit/
 private/
+.claude/
 .ipynb_checkpoints/
 build/
 dist/
