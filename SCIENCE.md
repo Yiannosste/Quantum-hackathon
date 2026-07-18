@@ -7,9 +7,10 @@ is required to start coding — but the teams that win tend to be the ones that
 understand this page.
 
 Notation used throughout: our Day-1 instance has $n = 16$ binary variables
-($8$ customers $\times$ $2$ vehicles), $x_{c,v} \in \{0,1\}$ means "customer
-$c$ rides on vehicle $v$", $d_c$ is customer $c$'s demand, $C_v$ is vehicle
-$v$'s capacity, and $D_{ij}$ is the distance between customers $i$ and $j$.
+($8$ customers $\times$ $2$ vehicles), $x_{c,v} \in \lbrace 0,1 \rbrace$ means
+"customer $c$ rides on vehicle $v$", $d_c$ is customer $c$'s demand, $C_v$ is
+vehicle $v$'s capacity, and $D_{ij}$ is the distance between customers $i$
+and $j$.
 
 ---
 
@@ -17,13 +18,7 @@ $v$'s capacity, and $D_{ij}$ is the distance between customers $i$ and $j$.
 
 ### 1.1 What the business wants
 
-$$
-\min_{x} \;\; \underbrace{\sum_{v} \sum_{i<j} D_{ij}\, x_{i,v}\, x_{j,v}}_{\text{compact service zones}}
-\quad \text{subject to} \quad
-\underbrace{\sum_v x_{c,v} = 1 \;\; \forall c}_{\text{every customer served once}}
-\;,\;\;
-\underbrace{\sum_c d_c\, x_{c,v} \le C_v \;\; \forall v}_{\text{no truck overloaded}}
-$$
+$$\min_{x} \quad \underbrace{\sum_{v} \sum_{i < j} D_{ij} x_{i,v} x_{j,v}}_{\text{compact service zones}} \quad \text{subject to} \quad \underbrace{\sum_v x_{c,v} = 1 \enspace \forall c}_{\text{every customer served once}} \quad \text{and} \quad \underbrace{\sum_c d_c x_{c,v} \le C_v \enspace \forall v}_{\text{no truck overloaded}}$$
 
 This is a constrained quadratic binary program. Quantum optimizers cannot
 handle the "subject to" part — they minimize *one unconstrained function*.
@@ -32,29 +27,20 @@ handle the "subject to" part — they minimize *one unconstrained function*.
 
 A **QUBO** (Quadratic Unconstrained Binary Optimization) has the form
 
-$$
-E(x) \;=\; x^\top Q\, x + \text{offset}, \qquad x \in \{0,1\}^n
-$$
+$$E(x) = x^\top Q x + \text{offset}, \qquad x \in \lbrace 0,1 \rbrace^n$$
 
 — nothing but linear and pairwise terms over binary variables. To get there we
 convert each constraint into an *energy penalty* that is zero when the
 constraint holds and positive when it doesn't, then add it to the objective:
 
-$$
-E_\lambda(x) \;=\; \mathrm{Cost}(x)
-\;+\; \lambda_{\text{oh}} \sum_c \Big(1 - \sum_v x_{c,v}\Big)^2
-\;+\; \lambda_{\text{cap}} \sum_v \Big(\sum_c d_c\, x_{c,v} - C_v\Big)^2
-$$
+$$E_\lambda(x) = \mathrm{Cost}(x) + \lambda_{\text{oh}} \sum_c \Big(1 - \sum_v x_{c,v}\Big)^2 + \lambda_{\text{cap}} \sum_v \Big(\sum_c d_c x_{c,v} - C_v\Big)^2$$
 
 Two algebraic facts make this legal QUBO material:
 
 **Binary idempotency, $x^2 = x$.** Squaring a linear expression of binaries
 yields only linear and pairwise terms. For a one-hot group over two vehicles:
 
-$$
-\Big(1 - x_{c,0} - x_{c,1}\Big)^2
-= 1 - x_{c,0} - x_{c,1} + 2\,x_{c,0}\,x_{c,1}
-$$
+$$\Big(1 - x_{c,0} - x_{c,1}\Big)^2 = 1 - x_{c,0} - x_{c,1} + 2 x_{c,0} x_{c,1}$$
 
 (check it: the cross term $2x_0x_1$ punishes double-assignment, the negative
 linear terms reward assignment, the constant $1$ punishes no assignment). This
@@ -63,11 +49,7 @@ is exactly what `OneHotConstraint.penalty_terms()` in
 
 **The capacity expansion** works the same way:
 
-$$
-\Big(\textstyle\sum_c d_c x_{c,v} - C_v\Big)^2
-= C_v^2 + \sum_c \big(d_c^2 - 2C_v d_c\big)\, x_{c,v}
-+ 2\sum_{i<j} d_i d_j\, x_{i,v}\, x_{j,v}
-$$
+$$\Big(\sum_c d_c x_{c,v} - C_v\Big)^2 = C_v^2 + \sum_c \big(d_c^2 - 2C_v d_c\big) x_{c,v} + 2\sum_{i < j} d_i d_j x_{i,v} x_{j,v}$$
 
 ⚠️ **Note the deliberate flaw** you will meet again in §4: this is an
 *equality* penalty. It is zero only when the truck is loaded to *exactly*
@@ -83,12 +65,10 @@ landscapes over the same $2^{16} = 65{,}536$ states, with different minima.
 ## 2. From QUBO to physics: the Ising Hamiltonian
 
 A QPU does not natively speak in 0/1 variables; it speaks in **spins**
-$z_i \in \{-1, +1\}$ (qubit measured up or down). The change of variables
-$x_i = (1 - z_i)/2$ turns any QUBO into an **Ising Hamiltonian**:
+$z_i \in \lbrace -1, +1 \rbrace$ (qubit measured up or down). The change of
+variables $x_i = (1 - z_i)/2$ turns any QUBO into an **Ising Hamiltonian**:
 
-$$
-H_C \;=\; \sum_i h_i\, Z_i \;+\; \sum_{i<j} J_{ij}\, Z_i Z_j \;+\; \text{const}
-$$
+$$H_C = \sum_i h_i Z_i + \sum_{i < j} J_{ij} Z_i Z_j + \text{const}$$
 
 where $Z_i$ is the Pauli-Z operator on qubit $i$, the *fields* $h_i$ come from
 your linear QUBO terms and the *couplings* $J_{ij}$ from your quadratic ones.
@@ -106,11 +86,7 @@ The **Quantum Approximate Optimization Algorithm** (Farhi, Goldstone & Gutmann,
 2014) prepares a quantum state whose measurement outcomes are biased toward
 low-energy bitstrings. The circuit, with $p$ layers:
 
-$$
-|\psi(\vec\gamma, \vec\beta)\rangle
-\;=\; \prod_{k=1}^{p} e^{-i\beta_k H_M}\, e^{-i\gamma_k H_C}\;
-|+\rangle^{\otimes n}
-$$
+$$|\psi(\vec\gamma, \vec\beta)\rangle = \prod_{k=1}^{p} e^{-i\beta_k H_M} e^{-i\gamma_k H_C} |+\rangle^{\otimes n}$$
 
 Read right-to-left, that is:
 
@@ -157,9 +133,7 @@ customer 3 or capacity 14. It sees exactly one mathematical object: the energy
 landscape $E_\lambda(\cdot)$ that *you* created the moment you chose a
 specific λ. Its entire job is:
 
-$$
-\text{(inner)}\qquad \min_{x \in \{0,1\}^{16}} \; E_\lambda(x)
-$$
+$$\text{(inner)} \qquad \min_{x \in \lbrace 0,1 \rbrace^{16}} E_\lambda(x)$$
 
 It finds (samples near) the lowest valley **of that specific landscape** —
 faithfully, literally, with zero judgment. If your λ made an illegal
@@ -172,11 +146,7 @@ Your tuner in `my_tuner.py` runs the outer loop. It searches λ-space, and its
 goal is **landscape design**: shape $E_\lambda$ so that the quantum computer's
 lowest valley *coincides with* the cheapest 100%-legal logistics route:
 
-$$
-\text{(outer)}\qquad \min_{\lambda} \; \mathrm{Cost}\big(\text{decode}(x^\star_\lambda)\big)
-\quad \text{where } x^\star_\lambda = \arg\min_x E_\lambda(x),
-\quad \text{s.t. } x^\star_\lambda \text{ is feasible}
-$$
+$$\text{(outer)} \qquad \min_{\lambda} \mathrm{Cost}\big(\text{decode}(x^\star_\lambda)\big) \quad \text{where} \quad x^\star_\lambda = \arg\min_x E_\lambda(x) \quad \text{is feasible}$$
 
 This is a **bilevel optimization**: the outer variable (λ) does not appear in
 the final answer at all — it only *steers where the inner minimum lands*.
@@ -220,12 +190,10 @@ the two deliverables reinforce each other.)*
 
 ### 5.1 The problem, precisely
 
-The shipped capacity penalty $\lambda\,(\text{load}_v - C_v)^2$ is zero **only
+The shipped capacity penalty $\lambda (\text{load}_v - C_v)^2$ is zero **only
 at exact full load**. The energy of a *legal* state now depends on λ:
 
-$$
-E_\lambda(\text{legal } x) = \mathrm{Cost}(x) + \lambda_{\text{cap}} \sum_v (\text{load}_v - C_v)^2
-$$
+$$E_\lambda(\text{legal } x) = \mathrm{Cost}(x) + \lambda_{\text{cap}} \sum_v (\text{load}_v - C_v)^2$$
 
 On Day-1 data the optimal split carries loads $14$ and $14$ against capacities
 $15$ and $14$ — so the true optimum sits at penalty $\lambda_{\text{cap}} \cdot 1$,
@@ -234,7 +202,7 @@ preferring *worse routes with fuller trucks*. The penalty is fighting the
 objective inside the feasible region — exactly where it should be silent.
 
 What we actually want is the inequality penalty
-$\max(0,\, \text{load}_v - C_v)^2$ — but $\max$ is not a quadratic function of
+$\max(0, \text{load}_v - C_v)^2$ — but $\max$ is not a quadratic function of
 $x$, so it cannot go into a QUBO directly.
 
 ### 5.2 The classical trick, imported to quantum
@@ -243,17 +211,11 @@ Operations research has fixed this for a century: convert the inequality into
 an equality by adding a **slack variable** — a nonnegative helper that absorbs
 the unused capacity:
 
-$$
-\sum_c d_c\, x_{c,v} \le C_v
-\quad\Longleftrightarrow\quad
-\sum_c d_c\, x_{c,v} + s_v = C_v, \qquad s_v \in \{0, 1, \dots, C_v\}
-$$
+$$\sum_c d_c x_{c,v} \le C_v \quad \Longleftrightarrow \quad \sum_c d_c x_{c,v} + s_v = C_v, \qquad s_v \in \lbrace 0, 1, \dots, C_v \rbrace$$
 
 Then penalize the *equality*:
 
-$$
-P_v(x, s) = \lambda_{\text{cap}} \Big(\sum_c d_c\, x_{c,v} + s_v - C_v\Big)^2
-$$
+$$P_v(x, s) = \lambda_{\text{cap}} \Big(\sum_c d_c x_{c,v} + s_v - C_v\Big)^2$$
 
 Now for **every** legal load there exists a slack value ($s_v = C_v -
 \text{load}_v$) making the penalty **exactly zero**, while every overload
@@ -266,19 +228,17 @@ free again.
 The QPU only has binary variables, so the integer $s_v$ must be **binary
 encoded**:
 
-$$
-s_v \;=\; \sum_{k=0}^{K-1} 2^k\, y_{v,k}, \qquad K = \lceil \log_2 (C_v + 1) \rceil
-$$
+$$s_v = \sum_{k=0}^{K-1} 2^k y_{v,k}, \qquad K = \lceil \log_2 (C_v + 1) \rceil$$
 
 For $C_v = 15$: four bits ($8+4+2+1$) cover $0\ldots15$ exactly. For
 $C_v = 14$: four bits overshoot to 15 — harmless (the extra slack states are
 simply never the zero-penalty ones), or you can use the standard tightening
 trick of giving the last bit the weight $C_v - (2^{K-1} - 1) = 7$ so the range
-is exact. Expanding $P_v$ produces new pairwise terms — $y\!\cdot\!y$ within
-the slack register and $x\!\cdot\!y$ cross terms coupling slack bits to
+is exact. Expanding $P_v$ produces new pairwise terms — $y \cdot y$ within
+the slack register and $x \cdot y$ cross terms coupling slack bits to
 assignment bits — all legal QUBO.
 
-**The bill:** $4$ slack qubits per vehicle $\times\, 2$ vehicles $= 8$ extra
+**The bill:** $4$ slack qubits per vehicle $\times$ $2$ vehicles $= 8$ extra
 qubits. Your problem grows from **16 to 24 qubits**, with wider coefficient
 ranges (weights up to $2\lambda C_v \cdot 8$) that strain hardware precision,
 and a deeper circuit that decoheres more. This is why we call it the **boss
