@@ -11,7 +11,7 @@ import pytest
 
 from problems.vrp.definition import VehicleRoutingProblem
 from qlkit import GreedyAssignmentRepair, LocalSimulatorBackend, LogisticsSolver, SolverConfig
-from tools.oracle import instance_report
+from tests.oracle import instance_report
 
 DAY2_PATH = Path(__file__).resolve().parent.parent / "private" / "competition_day2_disruption.json"
 

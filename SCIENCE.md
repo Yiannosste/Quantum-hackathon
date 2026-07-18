@@ -152,7 +152,7 @@ This is a **bilevel optimization**: the outer variable (λ) does not appear in
 the final answer at all — it only *steers where the inner minimum lands*.
 
 Watch the landscape deform on our actual Day-1 instance (identical pipeline,
-only λ changed — from `tools/calibrate_instance.py`):
+only λ changed — measured during organizer calibration):
 
 | λ regime | Where the lowest valley sits | Measured best cost |
 |---|---|---|

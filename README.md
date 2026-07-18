@@ -181,7 +181,7 @@ problems/       🔒 The scored problem definitions & data. The constraint code
                    here IS the judging criteria. Read, never edit.
 configs/        ⚙️  local.json (emulator) ⇄ iqm.json (real QPU) — the one-line switch
 starter_kit/    ✏️  YOUR code: my_tuner.py, my_repair.py, notebooks
-tools/, tests/  🔒 Organizer tooling and CI
+tests/          🔒 The toolkit's test suite (CI) — read, never edit
 ```
 
 Your entire submission lives in `starter_kit/`. The boundary is the point:

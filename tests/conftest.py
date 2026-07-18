@@ -25,4 +25,4 @@ def ledger_path(tmp_path):
 
 
 # Exhaustive reference optimum, shared with the organizer calibration tool.
-from tools.oracle import brute_force_best_feasible  # noqa: E402, F401
+from tests.oracle import brute_force_best_feasible  # noqa: E402, F401
