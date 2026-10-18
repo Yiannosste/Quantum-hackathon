@@ -49,7 +49,7 @@ def test_repair_does_not_mutate_input(vrp):
 
 
 def test_repair_works_on_warehouse_too(warehouse):
-    """Same heuristic, different problem — the generic contract at work."""
+    """Same heuristic, different problem: the generic contract at work."""
     broken = warehouse.decode((1,) * warehouse.num_vars())
     fixed = GreedyAssignmentRepair().repair(broken, warehouse)
     assert _total_hard_violation(warehouse, fixed) == 0

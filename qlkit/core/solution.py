@@ -24,7 +24,7 @@ class SampleRecord:
     """One distinct measured bitstring, fully post-processed.
 
     ``energy`` is the raw QUBO energy (objective + penalties) of the bits as
-    measured — i.e. what the QPU was actually minimizing. ``true_objective``
+    measured, i.e. what the QPU was actually minimizing. ``true_objective``
     and ``violations`` refer to the *final* solution (post-repair if repair
     ran), so teams can see exactly what repair bought them.
     """

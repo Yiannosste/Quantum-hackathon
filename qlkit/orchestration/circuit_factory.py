@@ -3,7 +3,7 @@
 Participants stay at the QUBO abstraction level; each backend interprets a
 CircuitSpec natively (Boltzmann sampling locally, QAOA on IQM hardware).
 ``n_variations`` produces several specs with perturbed variational
-parameters — sampled together in one batch, they give QAOA a cheap
+parameters. Sampled together in one batch, they give QAOA a cheap
 parameter sweep without extra round trips.
 """
 

@@ -3,7 +3,7 @@ backend-sized batches, with retry/backoff on transient failures.
 
 Participants never see this class. It exists so that when a team's outer
 loop fires 20 evaluate() calls, they coalesce into 1-2 QPU jobs instead of
-20 — which matters enormously against a shared hardware queue.
+20, which matters enormously against a shared hardware queue.
 
 Mechanics:
 - ``submit()`` enqueues a request and returns a Future immediately.
@@ -81,7 +81,7 @@ class BatchDispatcher:
         self._lock = threading.Lock()
         self._closed = False
 
-    # -- public API --------------------------------------------------------
+    # === public API =======================================================
 
     def submit(self, circuits: Sequence[CircuitSpec], shots: int) -> "Future[RawResult]":
         """Returns a Future resolving to a RawResult with one counts dict per
@@ -102,7 +102,7 @@ class BatchDispatcher:
         if wait and self._worker is not None:
             self._worker.join(timeout=60)
 
-    # -- worker ------------------------------------------------------------
+    # === worker ===========================================================
 
     def _ensure_worker(self) -> None:
         with self._lock:

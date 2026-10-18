@@ -103,7 +103,7 @@ class LogisticsSolver:
             on_status=self._on_status if self.config.verbose else None,
         )
 
-    # -- construction ------------------------------------------------------
+    # === construction =====================================================
 
     @classmethod
     def from_config(
@@ -124,7 +124,7 @@ class LogisticsSolver:
             config=load_solver_config(raw.get("solver", {})),
         )
 
-    # -- Simulation & Submission Phase --------------------------------------
+    # === Simulation & Submission Phase =====================================
 
     def submit(
         self,
@@ -142,7 +142,7 @@ class LogisticsSolver:
 
     def gather(self, *handles: SolveHandle) -> List[SolveResult]:
         """Blocking; results match handle order. A failed handle raises when
-        its turn comes — earlier results are still returned on the others."""
+        its turn comes. Earlier results are still returned on the others."""
         return [self._finish(h) for h in handles]
 
     def solve(
@@ -153,7 +153,7 @@ class LogisticsSolver:
         """Blocking facade over submit()+gather(). Notebook-friendly."""
         return self._finish(self.submit(lambdas, shots))
 
-    # -- Meta-Optimizer Support (the outer loop) -----------------------------
+    # === Meta-Optimizer Support (the outer loop) ============================
 
     def evaluate(
         self,
@@ -163,12 +163,12 @@ class LogisticsSolver:
         """The single method a Bayesian/RL lambda tuner calls per iteration."""
         return self.solve(lambdas, shots).metrics
 
-    # -- Validation Phase ----------------------------------------------------
+    # === Validation Phase ===================================================
 
     def validate(self, solution: Solution) -> ValidationReport:
         return _validate(self.problem, solution)
 
-    # -- lifecycle -----------------------------------------------------------
+    # === lifecycle ==========================================================
 
     def close(self) -> None:
         self._dispatcher.shutdown()
@@ -180,7 +180,7 @@ class LogisticsSolver:
     def __exit__(self, *exc) -> None:
         self.close()
 
-    # -- internals -----------------------------------------------------------
+    # === internals ==========================================================
 
     def _finish(self, handle: SolveHandle) -> SolveResult:
         raw = handle._future.result()

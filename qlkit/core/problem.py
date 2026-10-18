@@ -2,7 +2,7 @@
 
 This is the ONLY interface participants must implement to plug a new
 logistics problem (VRP, warehouse allocation, ...) into the toolkit. The
-orchestration layer never imports anything problem-specific — it sees a
+orchestration layer never imports anything problem-specific. It sees a
 QUBO, a decode function, and a list of constraints.
 
 Design rules encoded here:
@@ -42,7 +42,7 @@ class ProblemDefinition(ABC):
 
     @abstractmethod
     def objective_qubo(self) -> QUBO:
-        """Pure cost function — no penalties."""
+        """Pure cost function, no penalties."""
 
     @abstractmethod
     def constraints(self) -> List[Constraint]: ...

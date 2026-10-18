@@ -1,7 +1,7 @@
 """Generic, reusable constraints for one-hot assignment encodings.
 
-Both the VRP and the Warehouse problem are built from these two classes —
-that reuse is the proof that the toolkit's problem contract is agnostic.
+Both the VRP and the Warehouse problem are built from these two classes.
+That reuse is the proof that the toolkit's problem contract is agnostic.
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ class OneHotConstraint(Constraint):
 
     Penalty per group: lam * (1 - sum(x))^2, which expands over binaries to
     lam * (1 - sum_i x_i + 2 * sum_{i<j} x_i x_j).
-    Violation: sum over groups of |1 - sum(x)| — continuous, so tuners see
+    Violation: sum over groups of |1 - sum(x)|, continuous, so tuners see
     "2 groups broken" vs "5 groups broken".
     """
 
@@ -48,13 +48,13 @@ class CapacityConstraint(Constraint):
     ``loads`` maps each bin name to {variable_index: weight}; ``capacities``
     maps bin name to its limit.
 
-    Violation: sum over bins of max(0, load - capacity) — only OVERLOAD
+    Violation: sum over bins of max(0, load - capacity), only OVERLOAD
     counts, in real units (e.g. kg over).
 
     Penalty: lam * (load - capacity)^2 per bin. NOTE this is an equality-
     style penalty: it also (wrongly) punishes underloaded bins. It is QUBO-
     expressible without extra variables, which is why the starter kit ships
-    it — encoding the true inequality with slack variables is a documented
+    it. Encoding the true inequality with slack variables is a documented
     stretch goal for participants (see notebook 01).
     """
 

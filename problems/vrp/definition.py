@@ -3,7 +3,7 @@
 Encoding: binary x[c, v] = 1 if customer c is served by vehicle v.
 Variable index: var(c, v) = c * num_vehicles + v.
 
-Objective: cluster-compactness proxy for route length — for each vehicle,
+Objective: cluster-compactness proxy for route length. For each vehicle,
 sum of pairwise distances between the customers assigned to it. (A full
 tour-ordering QUBO needs O(n^2) more qubits; upgrading this objective is an
 advanced-track task.)
@@ -39,7 +39,7 @@ class VehicleRoutingProblem(ProblemDefinition):
         self.num_vehicles = len(capacities)
         self._constraints = self._build_constraints()
 
-    # -- encoding ------------------------------------------------------------
+    # === encoding ===========================================================
 
     def var(self, customer: int, vehicle: int) -> int:
         return customer * self.num_vehicles + vehicle
@@ -53,7 +53,7 @@ class VehicleRoutingProblem(ProblemDefinition):
             for c in range(self.num_customers)
         ]
 
-    # -- ProblemDefinition contract -------------------------------------------
+    # === ProblemDefinition contract ==========================================
 
     def objective_qubo(self) -> QUBO:
         builder = QUBOBuilder(num_vars=self.num_vars())
@@ -83,7 +83,7 @@ class VehicleRoutingProblem(ProblemDefinition):
             payload={"assignment": assignment, "routes": routes},
         )
 
-    # -- helpers ---------------------------------------------------------------
+    # === helpers ==============================================================
 
     def _build_constraints(self) -> List[Constraint]:
         loads = {
@@ -108,7 +108,7 @@ class VehicleRoutingProblem(ProblemDefinition):
     @classmethod
     def small_instance(cls) -> "VehicleRoutingProblem":
         """6 customers x 2 vehicles = 12 binary variables. Sized so a decent
-        repair heuristic reliably yields feasible solutions — nothing
+        repair heuristic reliably yields feasible solutions. Nothing
         demoralizes a room like best(feasible_only=True) == None."""
         here = Path(__file__).parent / "data" / "small_instance.json"
         return cls.from_json(here)
@@ -117,7 +117,7 @@ class VehicleRoutingProblem(ProblemDefinition):
     def competition_instance(cls) -> "VehicleRoutingProblem":
         """The scored Day-1 instance: 8 customers x 2 vehicles = 16 binary
         variables. Two clusters plus two 'bridge' customers, tight capacity.
-        Heads up: the instance WILL change during the event — build your
+        Heads up: the instance WILL change during the event. Build your
         tuner for generality, not for these exact numbers."""
         here = Path(__file__).parent / "data" / "competition_day1.json"
         return cls.from_json(here)

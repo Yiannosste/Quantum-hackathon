@@ -6,7 +6,7 @@ submits it to an IQM quantum computer. Requires the optional dependency:
     pip install "qlkit[iqm]"     # or: pip install qiskit-iqm
 
 Auth: set the IQM_TOKEN environment variable (never hardcode tokens in
-notebooks — they end up in git).
+notebooks, they end up in git).
 
 NOTE for organizers: this module is exercised against real hardware, not in
 CI. Keep the mapping logic thin; everything testable (batching, retries,
@@ -75,7 +75,7 @@ class IQMCloudBackend(Backend):
         self.qaoa_layers = qaoa_layers
         self._jobs: Dict[str, object] = {}
 
-    # -- Backend interface -------------------------------------------------
+    # === Backend interface ================================================
 
     def submit(self, circuits: Sequence[CircuitSpec], shots: int) -> JobHandle:
         from qiskit import transpile
@@ -86,7 +86,7 @@ class IQMCloudBackend(Backend):
         ]
         try:
             job = self._backend.run(compiled, shots=shots)
-        except Exception as exc:  # network / throttling — let dispatcher retry
+        except Exception as exc:  # network / throttling, let dispatcher retry
             raise TransientBackendError(str(exc)) from exc
         handle = self._new_handle(len(circuits), iqm_job_id=str(job.job_id()))
         self._jobs[handle.job_id] = job
@@ -106,16 +106,16 @@ class IQMCloudBackend(Backend):
         for i in range(handle.num_circuits):
             counts = result.get_counts(i) if handle.num_circuits > 1 else result.get_counts()
             # Qiskit bitstrings are little-endian (qubit 0 rightmost);
-            # qlkit convention is variable 0 leftmost — reverse here so the
+            # qlkit convention is variable 0 leftmost. Reverse here so the
             # rest of the stack never has to know.
             counts_list.append({key[::-1]: v for key, v in counts.items()})
         return RawResult(counts_list, {"iqm_job_id": handle.meta.get("iqm_job_id")})
 
-    # -- QUBO -> QAOA ------------------------------------------------------
+    # === QUBO -> QAOA =====================================================
 
     def _to_qaoa_circuit(self, spec: CircuitSpec):
         """Standard QAOA ansatz for the QUBO's Ising form. Angles come from
-        spec.params (defaults are deliberately mediocre — tuning them is
+        spec.params (defaults are deliberately mediocre, tuning them is
         part of the hackathon's advanced track)."""
         from qiskit import QuantumCircuit
 

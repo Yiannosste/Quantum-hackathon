@@ -2,7 +2,7 @@
 
 Key rule: ``submit()`` is ALWAYS non-blocking, even on the local simulator
 (which simply resolves instantly). Participant code written against the
-simulator is therefore identical to QPU code — no async rewrite on day two.
+simulator is therefore identical to QPU code. No async rewrite on day two.
 """
 
 from __future__ import annotations

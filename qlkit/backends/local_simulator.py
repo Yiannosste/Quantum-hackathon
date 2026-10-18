@@ -2,7 +2,7 @@
 
 For small problems (<= ``exact_threshold`` variables) it enumerates the full
 state space and samples the Gibbs/Boltzmann distribution at a configurable
-temperature — a stand-in for the noisy, low-energy-biased distribution a
+temperature, a stand-in for the noisy, low-energy-biased distribution a
 tuned QAOA run produces. For larger problems it falls back to simulated
 annealing restarts.
 
@@ -66,7 +66,7 @@ class LocalSimulatorBackend(Backend):
         except KeyError:
             raise BackendError(f"Unknown job {handle.job_id}") from None
 
-    # -- sampling ---------------------------------------------------------
+    # === sampling ========================================================
 
     def _sample(self, qubo: QUBO, shots: int) -> Dict[str, int]:
         n = qubo.num_vars

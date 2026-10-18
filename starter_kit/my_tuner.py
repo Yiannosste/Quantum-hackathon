@@ -10,7 +10,7 @@ and EvalMetrics separates the three signals a tuner needs:
     metrics.feasible_fraction  how often the QPU lands in the legal region
 
 The random-search baseline below works. Beating it is the challenge:
-plug in scikit-optimize (gp_minimize), Optuna, or your own RL agent —
+plug in scikit-optimize (gp_minimize), Optuna, or your own RL agent,
 anything that maps lambdas -> scalarized score.
 
 Run me:  python starter_kit/my_tuner.py

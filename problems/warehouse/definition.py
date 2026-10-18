@@ -7,7 +7,7 @@ Objective: linear handling cost per (task, zone) pair, plus a pairwise
 congestion cost for tasks sharing a zone.
 
 Deliberately reuses the SAME generic constraints as the VRP
-(problems/common.py) — the orchestration layer cannot tell the two
+(problems/common.py). The orchestration layer cannot tell the two
 problems apart, which is the point of the agnostic contract.
 """
 

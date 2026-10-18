@@ -1,4 +1,4 @@
-"""qlkit — backend-agnostic quantum-classical hybrid optimization toolkit.
+"""qlkit: backend-agnostic quantum-classical hybrid optimization toolkit.
 
 Layering (strict dependency direction, top depends on bottom):
 

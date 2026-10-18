@@ -19,7 +19,7 @@ from qlkit.core.problem import ProblemDefinition
 
 
 class MyRepair(GreedyAssignmentRepair):
-    """Extends the shipped greedy repair. Replace/override as you like —
+    """Extends the shipped greedy repair. Replace/override as you like,
     you only must honor the contract: return a solution at least as
     feasible as the input, never mutate the input."""
 

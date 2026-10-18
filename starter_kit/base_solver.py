@@ -3,7 +3,7 @@
 Run me first:  python starter_kit/base_solver.py
 
 Swap 'configs/local.json' for 'configs/iqm.json' when you're ready for real
-hardware — nothing else in this file changes. That is the whole point.
+hardware. Nothing else in this file changes. That is the whole point.
 """
 
 import sys
@@ -34,7 +34,7 @@ def main() -> None:
 
         best = result.best_solution
         if best is None:
-            print("No feasible solution found — raise lambdas or improve repair.")
+            print("No feasible solution found. Raise lambdas or improve repair.")
             return
         print(f"routes:             {best.payload['routes']}")
         print()

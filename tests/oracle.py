@@ -1,7 +1,7 @@
 """Exhaustive reference oracle for small instances. ORGANIZER-SIDE ONLY.
 
 Ground truth for calibration and tests: enumerates the full state space,
-so it is only usable up to ~20 variables. Never hand this to participants —
+so it is only usable up to ~20 variables. Never hand this to participants:
 it answers the exact question the hackathon asks them to answer via the
 quantum pipeline.
 """
@@ -47,7 +47,7 @@ class InstanceReport:
     raw_feasible_fraction: float          # feasible / 2^n
     num_assignments: int                  # product of one-hot group sizes
     assignment_feasible_fraction: float = field(default=0.0)
-    # feasible / num_assignments — the meaningful difficulty dial for
+    # feasible / num_assignments, the meaningful difficulty dial for
     # one-hot encodings, since only num_assignments states satisfy one-hot
     # at all.
 

@@ -6,7 +6,7 @@ pre- and post-repair solutions so teams can measure how much their
 heuristic is doing versus the QPU.
 
 GreedyAssignmentRepair is the shipped reference implementation. It is fully
-generic over any problem that exposes one_hot_groups() — it knows nothing
+generic over any problem that exposes one_hot_groups(). It knows nothing
 about vehicles or warehouses.
 """
 

@@ -1,7 +1,7 @@
 """Job tracking: persistent ledger + adaptive polling.
 
 Ledger: every submitted job is written to disk immediately, so a restarted
-notebook kernel doesn't orphan QPU jobs — the job ID and status survive.
+notebook kernel doesn't orphan QPU jobs. The job ID and status survive.
 
 Polling: exponential backoff with jitter (base -> cap), one status request
 at a time per job. The dispatcher multiplexes all in-flight jobs through a
