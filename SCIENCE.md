@@ -51,7 +51,7 @@ This is exactly what `OneHotConstraint.penalty_terms()` in
 
 $$\Big(\sum_c d_c x_{c,v} - C_v\Big)^2 = C_v^2 + \sum_c \big(d_c^2 - 2C_v d_c\big) x_{c,v} + 2\sum_{i < j} d_i d_j x_{i,v} x_{j,v}$$
 
-⚠️ **Note the deliberate flaw** you will meet again in §4: this is an
+**Note the deliberate flaw** you will meet again in §4: this is an
 *equality* penalty. It is zero only when the truck is loaded to *exactly*
 $C_v$. A legally underloaded truck still pays energy. Keep reading.
 

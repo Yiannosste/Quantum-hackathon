@@ -146,7 +146,7 @@ stretch goal) are in the [guide, §6](PARTICIPANT_GUIDE.md).
 | Phase | What happens |
 |---|---|
 | **Day 1: Build** | Develop your tuner + repair against the instance above, locally on the bundled quantum emulator. Verified runs on real IQM hardware via a one-line config switch. |
-| **Day 2: ⚡ Live disruption** | At an announced moment, **the problem changes**. A logistics incident strikes (we will not say what kind) and a new instance file is released. You re-optimize in a time-boxed sprint with a capped QPU budget. |
+| **Day 2: Live disruption** | At an announced moment, **the problem changes**. A logistics incident strikes (we will not say what kind) and a new instance file is released. You re-optimize in a time-boxed sprint with a capped QPU budget. |
 | **Validation** | Your solution is checked by `solver.validate()`, the *exact* code the judges run, shipped in the toolkit. No scoring disputes possible. |
 
 The Day-2 twist is the heart of the event. It makes overfitting fatal. A
@@ -176,13 +176,13 @@ for the notebooks; `pip install "qlkit[iqm]"` only when you go to hardware).
 ## 5. Repository map & rules of engagement
 
 ```
-qlkit/          🔒 The quantum middleware. Circuits, IQM cloud, batching,
-                   retries, result normalization. IMPORT IT, NEVER EDIT IT.
-problems/       🔒 The scored problem definitions & data. The constraint code
-                   here IS the judging criteria. Read, never edit.
-configs/        ⚙️  local.json (emulator) ⇄ iqm.json (real QPU), the one-line switch
-starter_kit/    ✏️  YOUR code: my_tuner.py, my_repair.py, notebooks
-tests/          🔒 The toolkit's test suite (CI). Read, never edit
+qlkit/          The quantum middleware. Circuits, IQM cloud, batching,
+                retries, result normalization. IMPORT IT, NEVER EDIT IT.
+problems/       The scored problem definitions & data. The constraint code
+                here IS the judging criteria. Read, never edit.
+configs/        local.json (emulator) <-> iqm.json (real QPU), the one-line switch
+starter_kit/    YOUR code: my_tuner.py, my_repair.py, notebooks
+tests/          The toolkit's test suite (CI). Read, never edit
 ```
 
 Your entire submission lives in `starter_kit/`. The boundary is the point:
@@ -203,4 +203,4 @@ stack, exactly as you would in industry.
   the actual scored data.
 
 Welcome aboard. The QPU is noisy, the deadline is real, and the bridge might
-be closed tomorrow. Build accordingly. 🚚⚛️
+be closed tomorrow. Build accordingly.

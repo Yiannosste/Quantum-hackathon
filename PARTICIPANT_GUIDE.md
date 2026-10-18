@@ -10,11 +10,11 @@ The repository enforces a strict three-layer separation. Learn this map before w
 
 ```
 quantum-hackathon/
-├── qlkit/            🔒 LOCKED MIDDLEWARE: import it, never edit it
-├── problems/         🔒 GROUND TRUTH: read it, never edit it
-├── configs/          ⚙️  Backend switch (local / mock / IQM)
-├── starter_kit/      ✏️  YOUR PLAYGROUND: everything you write lives here
-└── tests/            🔒 Organizer CI
+├── qlkit/            LOCKED MIDDLEWARE: import it, never edit it
+├── problems/         GROUND TRUTH: read it, never edit it
+├── configs/          Backend switch (local / mock / IQM)
+├── starter_kit/      YOUR PLAYGROUND: everything you write lives here
+└── tests/            Organizer CI
 ```
 
 ### `qlkit/`: the locked middleware
@@ -245,7 +245,7 @@ Ditch the baseline random search. Implement a real outer loop: **Bayesian Optimi
 
 On real hardware, most raw quantum samples are illegal. Implement a custom `RepairHeuristic` whose `repair(solution, problem)` method takes an invalid bitstring and **optimally "snaps" it onto a valid route**, not just *any* valid route. The shipped `GreedyAssignmentRepair` restores legality. A winning repair restores legality *cheaply* (repair toward the objective, add feasibility-preserving local search, invent problem-specific moves like customer swaps). The contract: return a solution at least as feasible as the input, and never mutate the input. Judged on: `feasible_fraction` uplift and the true cost of your repaired solutions, both visible in every `SampleSet`.
 
-### Challenge 3: The Slack Variable Boss Fight 👹
+### Challenge 3: The Slack Variable Boss Fight
 
 Open `problems/common.py` and read `CapacityConstraint.penalty_terms()`. The shipped penalty is:
 
@@ -271,7 +271,7 @@ problem = VehicleRoutingProblem.competition_instance()   # 8 customers x 2 vehic
 
 The Warehouse problem (`problems/warehouse/`) is **practice material**. It is the ideal sparring partner for checking that your tuner and repair generalize beyond the VRP, which brings us to the most important sentence in this guide:
 
-### ⚡ The Day-2 Live Disruption
+### The Day-2 Live Disruption
 
 > **At an announced moment on Day 2, the problem instance WILL change.** A logistics incident will be injected (we will not tell you in advance what kind) and a new instance file will be pushed to the repository. You will re-optimize against it in a **time-boxed sprint with a capped QPU budget**, and your disruption-response score is a significant part of your final ranking.
 
@@ -286,4 +286,4 @@ This is the professional skill the hackathon exists to teach. Real logistics sys
 
 ---
 
-**Final checklist before you submit:** your solution passes `solver.validate()` (that is literally the judging code), your tuner and repair live in `starter_kit/`, and `qlkit/` and `problems/` are byte-for-byte untouched. Now go make the QPU look smarter than it is. 🚀
+**Final checklist before you submit:** your solution passes `solver.validate()` (that is literally the judging code), your tuner and repair live in `starter_kit/`, and `qlkit/` and `problems/` are byte-for-byte untouched. Now go make the QPU look smarter than it is.
